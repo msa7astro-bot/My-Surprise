@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0213">
+<title>My Surprise | عيد ميلاد سعيد</title>
+<link rel="icon" href="./assets/images/favicon.png" type="image/png">
+<!-- استيراد الخط الساحر لكلمة For MS/Azza + خطوط الرسالة -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fff8ef;--rose:#d87583;--rose-dark:#a94e63;--gold:#c49a58;--ink:#563d43;--sage:#8a9c83}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Tahoma","Arial",sans-serif;line-height:1.9;overflow-x:hidden}
+button{font:inherit;cursor:pointer}
+
+/* =========================================
+   إعدادات شاشة البداية (Start Screen)
+   ========================================= */
+body.no-scroll { overflow: hidden !important; }
+#start-screen { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background-color: #0b0213; 
+    background-image: radial-gradient(circle at 50% 38%, rgba(63, 81, 181, 0.3), transparent 32%), linear-gradient(180deg, rgba(11, 2, 19, 0.88), #0b0213); 
+    z-index: 10000000; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    overflow: hidden; transition: opacity 1.5s ease-in-out, visibility 1.5s; 
+}
+.party-grid { 
+    position: absolute; inset: 0; z-index: -20; 
+    background-image: linear-gradient(rgba(255,248,228,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,248,228,0.07) 1px, transparent 1px); 
+    background-size: 42px 42px; 
+    mask-image: linear-gradient(to bottom, black, transparent 72%); 
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 72%); 
+}
+.ambient-glow { 
+    position: absolute; inset: 0; z-index: -10; 
+    background: radial-gradient(circle at 18% 24%, rgba(255,120,130,0.17) 0 4%, transparent 18%), 
+                radial-gradient(circle at 82% 34%, rgba(233,30,99,0.16) 0 3%, transparent 20%), 
+                radial-gradient(circle at 50% 72%, rgba(255,193,7,0.13), transparent 25%); 
+}
+.bunting { position: absolute; top: 1.5rem; z-index: 1; display: flex; transform: rotate(7deg); }
+.bunting-left { left: -1rem; }
+.bunting-right { right: -1rem; transform: scaleX(-1) rotate(7deg); }
+.bunting::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: #ffc107; }
+.bunting i { display: block; width: 31px; height: 38px; margin-right: 4px; background: #ff7882; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.bunting i:nth-child(even) { height: 30px; background: #fff8e4; }
+
+/* -- قصاصات الورق المتساقطة (Confetti) -- */
+.confetti-layer { position: absolute; inset: 0; z-index: -5; pointer-events: none; }
+.confetti-piece { position: absolute; top: -8vh; width: 9px; height: 16px; background: #ff7882; animation: confetti-fall linear infinite; }
+.confetti-1 { width: 10px; height: 10px; border-radius: 50%; background: #ffc107; }
+.confetti-2 { width: 7px; height: 18px; background: #3f51b5; }
+.confetti-3 { width: 11px; height: 11px; background: #e91e63; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+@keyframes confetti-fall { 0% { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate3d(36px, 112vh, 0) rotate(760deg); opacity: 0.8; } }
+
+.spark { position: absolute; color: #ffc107; text-shadow: 0 0 14px currentColor; z-index: 1; }
+.spark-one { left: 19%; top: 18%; font-size: 1.6rem; }
+.spark-two { right: 20%; top: 21%; font-size: 1.1rem; }
+.start-heart { position: absolute; color: #ff7882; text-shadow: 0 0 12px currentColor; z-index: 1; }
+.heart-one { left: 14%; bottom: 22%; }
+.heart-two { right: 14%; bottom: 19%; font-size: 1.3rem; }
+
+/* -- بالونات شاشة البداية -- */
+.start-balloon { position: absolute; z-index: 1; opacity: 0.9; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); animation: imageFloat 6s ease-in-out infinite alternate; pointer-events: none; }
+.balloon-left { width: clamp(80px, 20vw, 110px); left: 8%; top: 22%; transform: rotate(-5deg); animation-delay: 0s; }
+.balloon-right { width: clamp(90px, 22vw, 120px); right: 8%; top: 32%; transform: rotate(8deg); animation-delay: -3s; }
+
+.eyebrow-start { font-family: "Tahoma", "Arial", sans-serif; font-size: 1.5rem; font-weight: bold; color: #ff7882; margin-bottom: 5px; z-index: 2; }
+
+.title-glow { 
+    font-family: 'Caveat', cursive; 
+    font-size: clamp(3.5rem, 12vw, 5.5rem); color: #fff8e4; 
+    text-shadow: 0 0 10px rgba(255,120,130,0.8), 0 0 30px rgba(255,120,130,0.45), 3px 4px 0 #0b0213; 
+    margin: 0 0 25px 0; line-height: 1; z-index: 2; font-weight: bold;
+}
+.gift-wrap { position: relative; width: 180px; margin-bottom: 25px; z-index: 2; cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; }
+.gift-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 150px; border-radius: 50%; background: #ffc107; filter: blur(45px); animation: soft-pulse 3.6s ease-in-out infinite; z-index: -10; }
+.gift-img { width: 100%; height: auto; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5)); animation: imageFloat 4.5s ease-in-out infinite; }
+.gift-wrap:hover { transform: scale(1.15); }
+
+@keyframes imageFloat { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
+@keyframes soft-pulse { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.92); } 50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.08); } }
+
+/* =========================================
+   إضافات الزينة للصفحة الرئيسية
+   ========================================= */
+.dec-flag { position: absolute; top: -5px; width: clamp(150px, 40vw, 350px); z-index: 10; pointer-events: none; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); opacity: 0; animation: fadeIn 1.5s 1.5s forwards; }
+.flag-l { left: -15px; transform: rotate(-5deg); }
+.flag-r { right: -15px; transform: rotate(5deg) scaleX(-1); }
+
+.dec-flower { position: absolute; pointer-events: none; z-index: 0; animation: imageFloat 4s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); opacity: 0.8; }
+.df1 { width: 45px; top: 15%; left: 8%; animation-delay: 1s; }
+.df2 { width: 40px; bottom: 20%; right: 10%; animation-delay: 2s; }
+
+.dec-corner { position: absolute; width: clamp(80px, 20vw, 130px); bottom: 5%; left: 3%; pointer-events: none; z-index: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); animation: imageFloat 5s ease-in-out infinite; opacity: 0.9; transform: rotate(-10deg); }
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* =========================================
+   تصميم التورتة الاحترافية والفاخرة (جديد)
+   ========================================= */
+.cake-section { background: #fff; overflow: hidden; }
+
+/* المربع الأنيق حول التورتة لإبراز لون الكريمة والشموع */
+.cake-wrap { 
+  max-width: 420px; 
+  margin: 25px auto 18px; 
+  padding: 35px 20px 20px; 
+  background: radial-gradient(circle at 50% 35%, #fdf2f0 0%, #f7dfd9 55%, #f0cfc9 100%);
+  border: 2px solid #e8c4be;
+  border-radius: 32px;
+  box-shadow: 0 18px 40px rgba(159, 82, 98, 0.12), inset 0 0 25px rgba(255, 255, 255, 0.65);
+  position: relative;
+}
+
+.cake { 
+  position: relative; width: min(320px, 85vw); height: 270px; margin: auto; 
+  cursor: pointer; filter: drop-shadow(0 18px 20px rgba(107, 56, 64, 0.18)); 
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.cake:hover { transform: translateY(-6px) scale(1.02); }
+
+/* حامل التورتة (الطبق) */
+.plate { 
+  position: absolute; bottom: 8px; left: 5%; width: 90%; height: 24px; 
+  border-radius: 50%; background: linear-gradient(180deg, #ffffff, #efe2de); 
+  border: 2px solid #dec0b8; box-shadow: 0 8px 0 #cfaea6, 0 14px 20px rgba(0,0,0,0.15); 
+  z-index: 1;
+}
+
+/* الدور الأول (السفلي الكبير - بدون الشريط المتقطع) */
+.tier-bottom { 
+  position: absolute; bottom: 20px; left: 12%; width: 76%; height: 85px; 
+  border-radius: 16px 16px 28px 28px; 
+  background: linear-gradient(90deg, #e59ca4 0%, #f9cdd3 35%, #ffe6e9 50%, #f4bac2 80%, #d48790 100%); 
+  border-bottom: 6px solid #c1717b; box-shadow: inset 0 -10px 15px rgba(169, 78, 99, 0.15);
+  z-index: 2;
+}
+
+/* كريمة الدور السفلي مع ظل يبرز تفاصيلها */
+.icing-bottom { 
+  position: absolute; bottom: 88px; left: 11%; width: 78%; height: 28px; 
+  background: linear-gradient(180deg, #ffffff 0%, #fffcf9 100%); 
+  border-radius: 50% 50% 12px 12px; 
+  border-top: 1px solid #ffffff;
+  filter: drop-shadow(0 4px 3px rgba(135, 65, 75, 0.22)); 
+  z-index: 3;
+}
+
+/* الدور الثاني (العلوي) */
+.tier-top { 
+  position: absolute; bottom: 98px; left: 22%; width: 56%; height: 72px; 
+  border-radius: 14px 14px 20px 20px; 
+  background: linear-gradient(90deg, #ecc2a3 0%, #ffead8 45%, #f5d1b6 75%, #daab89 100%); 
+  border-bottom: 5px solid #c89674; z-index: 4;
+}
+
+/* كريمة الدور العلوي مع ظل يبرزها عن الخلفية */
+.icing-top { 
+  position: absolute; bottom: 155px; left: 21%; width: 58%; height: 26px; 
+  background: linear-gradient(180deg, #ffffff 0%, #fffbf7 100%); 
+  border-radius: 50% 50% 10px 10px; 
+  border-top: 1px solid #ffffff;
+  filter: drop-shadow(0 4px 3px rgba(135, 65, 75, 0.22)); 
+  z-index: 5;
+}
+
+/* قطرات الكريمة المتساقطة (Drips) */
+.drip { position: absolute; background: #fffdfa; border-radius: 0 0 12px 12px; }
+.icing-bottom .d1 { top: 14px; left: 8%; width: 14px; height: 26px; }
+.icing-bottom .d2 { top: 16px; left: 25%; width: 16px; height: 34px; }
+.icing-bottom .d3 { top: 15px; left: 46%; width: 13px; height: 22px; }
+.icing-bottom .d4 { top: 16px; left: 68%; width: 16px; height: 30px; }
+.icing-bottom .d5 { top: 14px; left: 85%; width: 14px; height: 24px; }
+
+.icing-top .dt1 { top: 14px; left: 10%; width: 12px; height: 22px; background: #fffcf9; }
+.icing-top .dt2 { top: 15px; left: 32%; width: 14px; height: 29px; background: #fffcf9; }
+.icing-top .dt3 { top: 14px; left: 55%; width: 12px; height: 19px; background: #fffcf9; }
+.icing-top .dt4 { top: 15px; left: 78%; width: 13px; height: 26px; background: #fffcf9; }
+
+/* كرات اللؤلؤ وحبات الفراولة */
+.pearls {
+  position: absolute; bottom: 95px; left: 21%; width: 58%; height: 10px; z-index: 5;
+  background: radial-gradient(circle, #f6c87a 45%, transparent 50%) repeat-x;
+  background-size: 14px 10px;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+}
+.berries {
+  position: absolute; bottom: 173px; left: 24%; width: 52%; height: 16px; z-index: 6;
+  display: flex; justify-content: space-around; align-items: center; pointer-events: none;
+}
+.berry {
+  width: 14px; height: 14px; background: radial-gradient(circle at 35% 35%, #ff6b81, #c0392b);
+  border-radius: 50% 50% 45% 45%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* رشات الحلوى الملونة (Sprinkles) */
+.sprinkle { position: absolute; width: 6px; height: 3px; border-radius: 3px; z-index: 6; }
+.sp1 { bottom: 55px; left: 22%; background: #e84393; transform: rotate(25deg); }
+.sp2 { bottom: 70px; left: 38%; background: #fdcb6e; transform: rotate(-40deg); }
+.sp3 { bottom: 45px; left: 58%; background: #00cec9; transform: rotate(15deg); }
+.sp4 { bottom: 65px; left: 75%; background: #6c5ce7; transform: rotate(-20deg); }
+.sp5 { bottom: 125px; left: 33%; background: #e84393; transform: rotate(-15deg); z-index: 5; }
+.sp6 { bottom: 135px; left: 62%; background: #00cec9; transform: rotate(35deg); z-index: 5; }
+
+/* 7 شموع متوهجة مع الدخان */
+.candle { 
+  position: absolute; bottom: 175px; width: 8px; height: 44px; 
+  background: repeating-linear-gradient(45deg, #fff 0 4px, #ff7882 4px 8px); 
+  border-radius: 4px 4px 2px 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); z-index: 7; 
+}
+.candle:nth-child(even) {
+  background: repeating-linear-gradient(-45deg, #fff 0 4px, #f6b93b 4px 8px);
+}
+.candle::before {
+  content: ""; position: absolute; top: -5px; left: 3px; width: 2px; height: 5px; background: #444;
+}
+.c1 { left: 26%; height: 38px; }
+.c2 { left: 33.5%; height: 44px; }
+.c3 { left: 41%; height: 48px; }
+.c4 { left: 48.5%; height: 52px; }
+.c5 { left: 56%; height: 48px; }
+.c6 { left: 63.5%; height: 44px; }
+.c7 { left: 71%; height: 38px; }
+
+.flame { 
+  position: absolute; top: -20px; left: 0px; width: 9px; height: 16px; 
+  border-radius: 50% 50% 50% 0; transform: rotate(-45deg); 
+  background: radial-gradient(circle at 30% 70%, #fff, #ffeaa7 40%, #fdcb6e 70%, #e17055); 
+  box-shadow: 0 0 12px #ffb64d, 0 0 24px #ff9f43; 
+  animation: flicker 0.7s infinite alternate ease-in-out; 
+}
+.candle:nth-child(even) .flame { animation-delay: 0.3s; }
+.candle:nth-child(3n) .flame { animation-delay: 0.5s; }
+
+@keyframes flicker { 
+  0% { transform: rotate(-45deg) scale(1); opacity: 1; }
+  100% { transform: rotate(-37deg) scale(0.86); opacity: 0.85; } 
+}
+
+.smoke {
+  position: absolute; top: -18px; left: 2px; width: 5px; height: 12px;
+  border-radius: 50%; background: rgba(180, 180, 180, 0.6);
+  filter: blur(2px); opacity: 0; pointer-events: none;
+}
+.cake.blown .flame { display: none; }
+.cake.blown .smoke { animation: smokeRise 1.6s ease-out forwards; }
+
+@keyframes smokeRise {
+  0% { opacity: 0.8; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-35px) translateX(8px) scale(2.8); }
+}
+
+/* تنسيق رسالة الحالة وزر التفاعل الجديد */
+.cake-status-msg {
+  font-size: 1.15rem; font-weight: bold; color: #9f5262;
+  margin: 12px auto 20px; padding: 8px 22px;
+  background: #fff8f6; border-radius: 50px; display: inline-block;
+  border: 1px dashed #e8b8ba; transition: all 0.3s ease;
+}
+
+.wish-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 999px; padding: 14px 34px;
+  font-size: 1.1rem; font-weight: bold; color: #fff;
+  background: linear-gradient(135deg, #d87583 0%, #a94e63 50%, #c49a58 100%);
+  background-size: 200% auto;
+  box-shadow: 0 10px 25px rgba(169, 78, 99, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  transition: all 0.35s ease;
+  position: relative; z-index: 5;
+}
+.wish-btn:hover {
+  background-position: right center;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(169, 78, 99, 0.45);
+}
+.wish-btn:active { transform: translateY(1px); }
+.wish-btn.relight {
+  background: linear-gradient(135deg, #c49a58 0%, #e0b66d 100%);
+  color: #fff;
+}
+
+/* =========================================
+   باقي التصميم الأصلي + تحديث قسم الأغنية
+   ========================================= */
+.hero{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:34px 20px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 15%,#fff 0,#fff7ef 43%,#f8e4df 100%)}
+.hero:before,.hero:after{content:"✿";position:absolute;color:#dca2a3;opacity:.35;font-size:clamp(90px,20vw,220px);pointer-events:none}
+.hero:before{top:4%;right:-35px;transform:rotate(18deg)}.hero:after{bottom:0;left:-25px;transform:rotate(-25deg)}
+.sparkle{position:absolute;color:#c49a58;animation:twinkle 2.8s ease-in-out infinite}
+.s1{top:18%;left:17%}.s2{top:32%;right:12%;animation-delay:1s}.s3{bottom:20%;right:20%;animation-delay:.6s}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
+.hero-inner{max-width:760px;position:relative;z-index:2}
+.eyebrow{color:var(--rose-dark);letter-spacing:.08em;font-size:.95rem; font-weight:bold;}
+h1{font-size:clamp(2.2rem,8vw,5rem);line-height:1.35;margin:.2em 0;color:#9f5262;font-weight:800}
+.hero p{font-size:clamp(1rem,3vw,1.25rem);max-width:590px;margin:0 auto 26px}
+.btn{border:0;border-radius:999px;padding:12px 25px;background:var(--rose-dark);color:white;box-shadow:0 8px 20px #a94e6325;transition:transform .2s,box-shadow .2s; z-index:5; position: relative;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px #a94e6335}
+.btn.secondary{background:#fff;border:1px solid #e8c8c4;color:var(--rose-dark)}
+section{padding:76px 20px; position:relative;}
+.section-inner{max-width:900px;margin:auto;text-align:center; position:relative; z-index:2;}
+.kicker{color:var(--gold);font-size:.9rem;font-weight:bold}
+h2{font-size:clamp(1.8rem,5vw,3rem);line-height:1.4;margin:8px 0 15px;color:#9f5262}
+.intro{max-width:650px;margin:0 auto 28px}
+.note{font-size:.95rem;color:#8c7478}
+
+.music-section{background:linear-gradient(135deg,#f8e8e4,#fff8ef)}
+.music-card{
+  max-width:570px;margin:28px auto 0;
+  background:radial-gradient(circle at 50% 0%, #fffdfa 0%, #fff 70%);
+  border:2px solid #eed3cd;border-radius:28px;padding:30px 25px;
+  box-shadow:0 18px 40px rgba(159, 82, 98, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.music-card.playing-active {
+  border-color: #d87583;
+  box-shadow: 0 20px 45px rgba(216, 117, 131, 0.22);
+}
+.music-icon{font-size:3rem; transition: transform 0.3s ease;}
+.singing-bear-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 12px;
+  animation: popInBear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+.singing-bear-wrap img {
+  width: 250px;
+  height: auto;
+  border-radius: 20px;
+  filter: drop-shadow(0 10px 18px rgba(169, 78, 99, 0.2));
+}
+@keyframes popInBear {
+  0% { opacity: 0; transform: scale(0.6) translateY(15px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.music-controls{display:flex;justify-content:center;align-items:center;gap:14px;margin:18px 0}
+.music-controls button{
+  width:58px;height:58px;border:0;border-radius:50%;
+  background:linear-gradient(135deg, #d87583, #a94e63);
+  color:white;font-size:1.25rem;
+  box-shadow: 0 8px 18px rgba(169, 78, 99, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.music-controls button:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 22px rgba(169, 78, 99, 0.4)}
+.music-controls .small{width:44px;height:44px;background:#f8e8e4;color:var(--rose-dark);box-shadow:none}
+.music-controls .small:hover{background:#f1d5cf;box-shadow:0 6px 14px rgba(169, 78, 99, 0.15)}
+.progress{height:8px;background:#f0dfdc;border-radius:99px;overflow:hidden;margin:18px 0}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg, var(--rose), var(--gold));transition:width .15s linear}
+
+/* =========================================
+   تطوير قسم البطاقات الثلاث والرسالة والفوتر (جديد)
+   ========================================= */
+.memories {
+  background: radial-gradient(circle at 50% 20%, #fdf4f1 0%, #f6e4df 60%, #efd8d2 100%);
+  overflow: hidden;
+}
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 32px;
+}
+.memory {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf7 100%);
+  border: 2px solid #eed2cc;
+  border-radius: 26px;
+  padding: 32px 20px 26px;
+  box-shadow: 0 14px 32px rgba(159, 82, 98, 0.09);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+  overflow: hidden;
+}
+.memory::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #d87583, #c49a58, #d87583);
+  opacity: 0.75;
+}
+.memory:hover {
+  transform: translateY(-8px);
+  border-color: #d87583;
+  box-shadow: 0 20px 40px rgba(169, 78, 99, 0.18);
+}
+.memory-icon-badge {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fffdfb, #f9e2de);
+  border: 1.5px solid #ebcbc5;
+  box-shadow: 0 8px 18px rgba(169, 78, 99, 0.12), inset 0 2px 4px rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: imageFloat 4.5s ease-in-out infinite;
+}
+.memory:nth-child(2) .memory-icon-badge { animation-delay: 0.8s; }
+.memory:nth-child(3) .memory-icon-badge { animation-delay: 1.6s; }
+.memory strong {
+  display: block;
+  font-size: 1.25rem;
+  color: #9f5262;
+  margin-bottom: 6px;
+}
+.memory p {
+  margin: 8px 0 0;
+  color: #63474d;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.letter-section {
+  background: linear-gradient(180deg, #ffffff 0%, #fff9f5 100%);
+}
+/* صورة الـ GIF الاحتفالية فوق زر الرسالة */
+.letter-preview-gif {
+  width: 195px;
+  max-width: 65vw;
+  height: auto;
+  margin: 0 auto 22px;
+  display: block;
+  border-radius: 24px;
+  border: 2px solid #f2d6d0;
+  box-shadow: 0 12px 28px rgba(159, 82, 98, 0.14);
+  animation: imageFloat 4.8s ease-in-out infinite;
+}
+
+/* =========================================
+   تصميم الرسالة المسطرة المنبثقة (مثل تصميم إيمي)
+   ========================================= */
+#mobile-letter-backdrop {
+  position: fixed; inset: 0; z-index: 999999; background: rgba(11, 2, 19, 0.82);
+  backdrop-filter: blur(4px);
+  display: none; place-items: center; padding: 1.2rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.letter-paper-mob {
+  background-color: #fffef9; 
+  background-image: repeating-linear-gradient(transparent, transparent 37px, rgba(255, 120, 130, 0.38) 37px, rgba(255, 120, 130, 0.38) 38px);
+  background-attachment: local;
+  width: 100%; max-width: 480px; max-height: 86vh;
+  border-radius: 16px;
+  padding: 22px; padding-top: 36px; text-align: center;
+  position: relative; overflow-y: auto; overflow-x: hidden;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.65);
+  animation: popInNoteModal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popInNoteModal {
+  0% { transform: translateY(40px) scale(0.92); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.letter-paper-mob::-webkit-scrollbar { width: 6px; }
+.letter-paper-mob::-webkit-scrollbar-track { background: transparent; }
+.letter-paper-mob::-webkit-scrollbar-thumb { background-color: #ff7882; border-radius: 10px; }
+
+.letter-stamp-mob {
+  position: absolute; top: 15px; left: 15px; width: 36px; height: 36px;
+  border: 2px dashed #dc143c; color: #dc143c; font-size: 1.05rem;
+  display: flex; align-items: center; justify-content: center;
+  transform: rotate(-10deg); background: #fffef9; z-index: 10;
+}
+.letter-close-mob {
+  position: absolute; top: 15px; right: 15px; background: #fffef9;
+  border: 2px solid #333; border-radius: 50%; width: 36px; height: 36px;
+  font-size: 1.1rem; font-weight: bold; display: flex; align-items: center; justify-content: center;
+  color: #333; cursor: pointer; z-index: 10; box-shadow: 0 2px 0 #333;
+  transition: transform 0.15s ease;
+}
+.letter-close-mob:active { transform: scale(0.9); }
+
+.letter-paper-mob h2 { 
+  font-family:'Caveat', cursive; font-size: 2.6rem; color: #9f5262; 
+  margin: 6px 0 4px 0; background: #fffef9; display: inline-block; padding: 0 12px; 
+  line-height: 1.2;
+}
+.letter-rule-mob { width: 65px; height: 3px; background: #ff7882; margin: 4px auto 18px; border-radius: 3px; }
+.letter-gif-mob { display: block; margin: 0 auto 18px; max-width: 100%; height: auto; border-radius: 14px; }
+
+.letter-text-container-mob { 
+  font-family: "Tahoma", "Arial", sans-serif; font-size: 1.06rem; line-height: 38px; 
+  color: #463035; text-align: right; direction: rtl; margin-bottom: 18px; min-height: 110px;
+  padding: 0 6px;
+}
+.letter-text-container-mob p { margin: 0; padding: 0; white-space: pre-line; font-weight: 500; }
+
+.letter-signoff-mob { 
+  font-family: "Tahoma", "Arial", sans-serif; 
+  font-size: 1.08rem; 
+  font-weight: bold;
+  color: #a94e63; 
+  text-align: left; 
+  padding-left: 12px; 
+  margin-top: 12px;
+  margin-bottom: 18px;
+  transform: rotate(-3deg); 
+  opacity: 0; 
+  transition: opacity 1s ease;
+  line-height: 1.8;
+}
+
+footer {
+  text-align: center;
+  padding: 42px 20px;
+  background: linear-gradient(135deg, #5e3b46 0%, #754c58 50%, #52333d 100%);
+  color: #fff2e9;
+  position: relative;
+  border-top: 3px solid #d89b9e;
+}
+.footer-heart-badge {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(255, 242, 233, 0.12);
+  border: 1px solid rgba(255, 196, 200, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #ffc4c8;
+  box-shadow: 0 0 20px rgba(255, 196, 200, 0.2);
+}
+footer p { margin: 6px 0; font-size: 1.05rem; }
+footer .heart { color: #ffd4d8; font-weight: bold; font-size: 1.1rem; }
+
+.confetti{position:fixed;top:-20px;z-index:10;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+.hidden{display:none!important}
+@media(max-width:650px){
+  section{padding:58px 17px}
+  .memory-grid{grid-template-columns:1fr; gap: 16px;}
+  .memory{display:flex;align-items:center;text-align:right;gap:16px;padding:20px 18px}
+  .memory-icon-badge{margin:0; flex-shrink:0; width:58px; height:58px; font-size:1.7rem;}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body class="no-scroll">
+
+<!-- شاشة البداية -->
+<div id="start-screen">
+  <div class="party-grid"></div>
+  <div class="ambient-glow"></div>
+  <div class="bunting bunting-left"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="bunting bunting-right"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  
+  <div class="confetti-layer" id="confetti-container"></div>
+  
+  <img src="./assets/images/balloon1.png" alt="Balloon" class="start-balloon balloon-left">
+  <img src="./assets/images/balloon2.png" alt="Balloon" class="start-balloon balloon-right">
+
+  <span class="spark spark-one">✦</span><span class="spark spark-two">✦</span>
+  <span class="start-heart heart-one">♥</span><span class="start-heart heart-two">♥</span>
+  
+  <p class="eyebrow-start">هدية صغيرة ليكي 😊</p>
+  <h1 class="title-glow">For Ms.Azza</h1>
+  
+  <!-- تم وضع أمر الضغط هنا داخل صندوق الهدية فقط -->
+  <div class="gift-wrap" id="gift-box">
+    <div class="gift-halo"></div>
+    <img src="./assets/images/gift.png" alt="هدية" class="gift-img">
+  </div>
+</div>
+
+<header class="hero" id="home">
+  <!-- أعلام الزينة العلوية -->
+  <img src="./assets/images/1.png" class="dec-flag flag-l" alt="">
+  <img src="./assets/images/1.png" class="dec-flag flag-r" alt="">
+  
+  <!-- أشكال الورد والزينة في الخلفية -->
+  <img src="./assets/images/decorate_flower.png" class="dec-flower df1" alt="">
+  <img src="./assets/images/decorate_flower.png" class="dec-flower df2" alt="">
+
+  <span class="sparkle s1">✧</span><span class="sparkle s2">✦</span><span class="sparkle s3">✧</span>
+  
+  <div class="hero-inner">
+    <div class="eyebrow">إلى من أعز في قلبي</div>
+    <h1>كل سنة وأنتي طيبة<br>يا أبلة عزة ❤️</h1>
+    <p>في هذا اليوم، لا أحتفل بيوم ميلادك وحسب، بل أحتفل بكونكِ أجمل هدية وهبني الله إياها، وأحنّ قلب عرفته يوماً: <strong>وجودكِ في حياتي</strong></p>
+    <button class="btn" onclick="startSurprise()">بدء المفاجأة ✨</button>
+    <p class="note" style="margin-top:16px">صُنعت بكل الحب، من ابنكِ الذي يحبكِ دائمًا</p>
+  </div>
+</header>
+
+<section class="cake-section" id="cake">
+  <div class="section-inner">
+    <div class="kicker">التورتة</div>
+    <h2>أمنية من قلبك وتورتة ليكي 🎂</h2>
+    <p class="intro">🕯️ كل شمعة بتنور.. بتنوّر زي ما وجودك دايماً بينوّر حياتي 💖 اضغطي على الكيكة عشان تطفي الشموع، واتمني أمنية حلوة كدا زيك 🎂🎈</p>
+    
+    <div class="cake-wrap">
+      <div class="cake" id="cakeArt" role="button" tabindex="0" aria-label="اضغطي لإطفاء شموع الكيكة" onclick="blowCandles()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();blowCandles()}">
+        
+        <!-- 7 شموع واقعية مع اللهب والدخان -->
+        <div class="candle c1"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c2"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c3"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c4"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c5"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c6"><i class="flame"></i><i class="smoke"></i></div>
+        <div class="candle c7"><i class="flame"></i><i class="smoke"></i></div>
+
+        <!-- حبات الكرز/الفراولة أعلى التورتة -->
+        <div class="berries">
+          <span class="berry"></span><span class="berry"></span><span class="berry"></span><span class="berry"></span>
+        </div>
+
+        <!-- الدور العلوي وكريمته المتساقطة -->
+        <div class="icing-top">
+          <i class="drip dt1"></i><i class="drip dt2"></i><i class="drip dt3"></i><i class="drip dt4"></i>
+        </div>
+        <div class="tier-top"></div>
+        <div class="pearls"></div>
+
+        <!-- الدور السفلي وكريمته المتساقطة -->
+        <div class="icing-bottom">
+          <i class="drip d1"></i><i class="drip d2"></i><i class="drip d3"></i><i class="drip d4"></i><i class="drip d5"></i>
+        </div>
+        <div class="tier-bottom"></div>
+
+        <!-- رشات الحلوى الملونة -->
+        <i class="sprinkle sp1"></i><i class="sprinkle sp2"></i><i class="sprinkle sp3"></i>
+        <i class="sprinkle sp4"></i><i class="sprinkle sp5"></i><i class="sprinkle sp6"></i>
+
+        <!-- طبق التورتة -->
+        <div class="plate"></div>
+      </div>
+    </div>
+
+    <!-- رسالة الحالة غير المكررة -->
+    <div>
+      <p id="cakeMessage" class="cake-status-msg" aria-live="polite">✨ الشموع منوّرة ومستنية أمنيتك الحلوة... ✨</p>
+    </div>
+
+    <!-- الزر الجديد والجمالي تحت التورتة -->
+    <button id="blowBtn" class="wish-btn" onclick="blowCandles()">
+      <span>أضغطي على التورتة</span> <span>🎂</span>
+    </button>
+  </div>
+</section>
+
+<section class="music-section" id="music">
+  <div class="section-inner">
+    <div class="kicker">أغنية عيد الميلاد</div>
+    <h2>أغنية مخصوص عشانك 🎵</h2>
+    <p class="intro">🎶 لأن يوم عيد ميلادك مش يوم عادي.. اخترتلك أغنية تفرح قلبك وتكمل فرحتنا بيكي 💖 شغليها يلا واسمعيها 🎂✨</p>
+    
+    <!-- مشغل الصوت مع التكرار التلقائي -->
+    <audio id="birthdayAudio" src="./assets/sounds/kol-sana.mp3" loop preload="auto"></audio>
+
+    <div class="music-card" id="musicCard">
+      <!-- صورة الدب المتحركة تظهر في الأعلى في المنتصف عند بدء الأغنية -->
+      <div id="singingBear" class="singing-bear-wrap hidden">
+        <img src="./assets/images/dudu-sing.gif" alt="دب يغني">
+      </div>
+      <!-- الأيقونة الافتراضية قبل التشغيل -->
+      <div id="defaultMusicIcon" class="music-icon">🎶🌸</div>
+      
+      <h3 style="margin:5px 0; color:#9f5262; font-size:1.35rem;">كل سنة وأنتي طيبة يا أحن قلب 🤍</h3>
+      <p class="note">أغنية احتفالية جميلة</p>
+      
+      <div class="progress"><span id="progressBar"></span></div>
+      
+      <div class="music-controls">
+        <button class="small" aria-label="إعادة تشغيل الأغنية من البداية" onclick="playTune(true)">↺</button>
+        <button id="playButton" aria-label="تشغيل الأغنية" onclick="toggleTune()">▶</button>
+      </div>
+      
+      <p id="musicStatus" class="note" aria-live="polite">ضغطة واحدة.. وتبدأ نغمة الفرحة عشانك 💗🎵</p>
+    </div>
+    <p id="extraSurpriseMsg" class="note" style="margin-top:18px; opacity:0; transform:translateY(10px); transition:all 1s ease;">💌 لسه المفاجأة ما خلصتش.. لسة في كمان 🤍</p>
+  </div>
+</section>
+
+<section class="memories" id="love">
+  <div class="section-inner">
+    <div class="kicker">كلام من القلب</div>
+    <h2>حاجات لازم تعرفيها دايماً 💖</h2>
+    <p class="intro">✨ وجودك جنبي مش مجرد صدفة، دي أحلى نعمة ربنا كرمني بيها.. ودي شوية حاجات بسيطة من اللي جوايا ليكي 🌸🤍</p>
+    <div class="memory-grid">
+      <div class="memory">
+        <div class="memory-icon-badge">🤍</div>
+        <div>
+        <strong>شكراً لوجودك جنبي</strong>
+        <p>على وقفتك معايا في كل خطوة، وعلى تشجيعك وكلامك اللي دايماً بيحفزني أكون أحسن، وحنيتك اللي بتديني أكبر طاقة.</p>
+      </div>
+      </div>
+      <div class="memory">
+        <div class="memory-icon-badge">🌷</div>
+        <div>
+          <strong>أنتي نعمة كبيرة</strong>
+          <p>وجودك في حياتي هدية غالية أوي من ربنا، حاجة جميلة بحمد ربنا عليها كل يوم وعمري ما هبطل أكون ممتن ليها.</p>
+        </div>
+      </div>
+      <div class="memory">
+        <div class="memory-icon-badge">🤲</div>
+        <div>
+          <strong>دعوتي ليكي دايماً</strong>
+          <p>بدعي ربنا يحفظك ليا ويديمك في حياتي، ويرزقك الصحة وراحة البال، ويملا كل أيامك الجاية فرحة وسعادة.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="letter-section" id="letter">
+  <div class="section-inner">
+    <div class="kicker">المفاجأة الأخيرة</div>
+    <h2>رسالة من قلبي ليكي 💌</h2>
+    <p class="intro">كتبتلك كلام طالع من قلبي عشان يفضل ذكرى حلوة بيننا في يوم ميلادك ✨</p>
+    
+    <!-- الصورة الأولى: Happy Birthday.gif تزين قسم الرسالة قبل فتحها -->
+    <img src="./assets/images/Happy Birthday.gif" alt="Happy Birthday" class="letter-preview-gif">
+    
+    <div>
+      <button id="letterButton" class="wish-btn" onclick="revealLetter()">
+        <span>افتحي رسالتي ليكي</span> <span>💌❤️</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- نافذة الرسالة المسطرة المنبثقة (مثل تصميم رسالة إيمي) -->
+<div id="mobile-letter-backdrop" onclick="handleBackdropClick(event)">
+  <section class="letter-paper-mob" id="letterPaperBox">
+    <button class="letter-close-mob" id="close-letter-mob" onclick="closeLetterModal()" aria-label="إغلاق الرسالة">✕</button>
+    <div class="letter-stamp-mob">♥</div>
+    <h2>For Ms.Azza</h2>
+    <div class="letter-rule-mob"></div>
+    
+    <!-- الصورة الثانية: Happy Birthday Cake.gif تظهر أعلى ورقة الرسالة -->
+    <img class="letter-gif-mob" src="./assets/images/Happy Birthday Cake.gif" alt="Birthday Cake Bear" style="width: 165px;">
+    
+    <div class="letter-text-container-mob">
+      <p id="mobile-letter-text"></p>
+    </div>
+    
+    <!-- الصورة الثالثة: Love.gif تظهر بنعومة فور انتهاء كتابة الرسالة -->
+    <img id="bottom-img-mob" class="letter-gif-mob" src="./assets/images/Love.gif" alt="Love Bear" style="width: 190px; opacity: 0; transition: opacity 1s ease;">
+    
+    <div id="signoff-mob" class="letter-signoff-mob">
+  بحبك جداً، ومكانتك في قلبي أكبر من أي كلام ❤️
+</div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-heart-badge">♡</div>
+  <p>إلى أغلى وأحن قلب — غلاوتك ومكانتك في قلبي ملهاش حدود ولا ليها يوم واحد في السنة 🌸</p>
+  <p class="heart">كل سنة وأنتي طيبة ومنوّرة حياتي، يا أجمل هدية من ربنا 🤍✨</p>
+</footer>
+
+<script>
+// توليد قصاصات الورق المتساقطة
+const confettiContainer = document.getElementById('confetti-container');
+for (let index = 0; index < 34; index++) {
+  const piece = document.createElement('i');
+  const kind = index % 4;
+  piece.className = `confetti-piece confetti-${kind}`;
+  piece.style.left = `${(index * 29 + 7) % 100}%`;
+  piece.style.animationDelay = `${-((index * 0.41) % 8)}s`;
+  piece.style.animationDuration = `${5.5 + (index % 6) * 0.7}s`;
+  if(confettiContainer) confettiContainer.appendChild(piece);
+}
+
+// سكربت إخفاء شاشة البداية (مرتبط بالهدية فقط)
+var startScreenClicked = false;
+document.getElementById("gift-box").addEventListener("click", function() {
+  if(startScreenClicked) return;
+  startScreenClicked = true;
+
+  const startScreen = document.getElementById("start-screen");
+  startScreen.style.opacity = '0';
+  
+  setTimeout(() => { 
+    startScreen.style.display = 'none'; 
+    document.body.classList.remove('no-scroll');
+  }, 1500);
+});
+
+// دالة تفاعل إطفاء الشموع وتغيير رسالة وزر التورتة
+function blowCandles(){
+  const cake = document.getElementById('cakeArt');
+  const msg = document.getElementById('cakeMessage');
+  const btn = document.getElementById('blowBtn');
+  
+  cake.classList.toggle('blown');
+  const out = cake.classList.contains('blown');
+  
+  if (out) {
+    msg.textContent = 'يا رب كل أمنية في قلبك تتحقق ويجعل أيامك كلها فرحة وسعادة 🤍🎉';
+    btn.innerHTML = '<span>نوّري الشموع من تاني</span> <span>🕯️✨</span>';
+    btn.classList.add('relight');
+    celebrate(35);
+  } else {
+    msg.textContent = '✨ الشموع رجعت تنوّر عشانك! اتمني أمنية تانية 🌷';
+    btn.innerHTML = '<span>أضغطي على التورتة تاني</span> <span>🎂</span>';
+    btn.classList.remove('relight');
+  }
+}
+
+// السكربتات الخاصة بالمفاجأة ومشغل أغنية kol-sana.mp3
+const birthdayAudio = document.getElementById('birthdayAudio');
+const playButton = document.getElementById('playButton');
+const musicStatus = document.getElementById('musicStatus');
+const progressBar = document.getElementById('progressBar');
+const singingBear = document.getElementById('singingBear');
+const defaultMusicIcon = document.getElementById('defaultMusicIcon');
+const musicCard = document.getElementById('musicCard');
+
+function startSurprise(){document.getElementById('cake').scrollIntoView({behavior:'smooth'});celebrate(22)}
+function celebrate(n=18){const symbols=['✦','♡','✿','✨','♥'];for(let i=0;i<n;i++){const e=document.createElement('span');e.className='confetti';e.textContent=symbols[Math.floor(Math.random()*symbols.length)];e.style.left=Math.random()*100+'vw';e.style.color=['#d87583','#c49a58','#8a9c83','#bd7c9b'][Math.floor(Math.random()*4)];e.style.fontSize=(14+Math.random()*18)+'px';e.style.animationDuration=(3+Math.random()*3)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),6500)}}
+
+// ==========================================
+// برمجة الرسالة المسطرة المتحركة (مثل تصميم إيمي)
+// ==========================================
+const letterFullText = `إلى أغلى وأحن إنسانة في حياتي، أبلة عزة..
+كل سنة وأنتي طيبة وبخير وسعادة وراحة بال. يمكن الكلمات متقدرش توصف كل اللي جوايا، بس أنا حابب أقولك إني بحبك جداً، ومعزتك وغلاوتك عندي أكبر من أي كلام يتقال.
+
+شكراً من قلبي على وقفتك جنبي، وعلى كل مرة شجعتيني وحفزتيني فيها عشان أكون أحسن وأكمل في طريقي. كلامك ودعمك وحنيتك كانوا دايماً بيدوني طاقة كبيرة ودافع، ومكانتك في قلبي كبيرة وغالية فوق ما تتخيلي.
+
+في يوم عيد ميلادك، بدعي ربنا يحققلك كل اللي بتتمنيه، ويكتبلك الخير والفرحة في كل خطوة، ويديكي الصحة وطولة العمر. ربنا يخليكي ليا وميحرمنيش منك أبداً، وتفضلي دايماً معايا ومنوّرة حياتي.
+
+ومش علشان خلاص مبقيتيش بتشوفيني ف دا يخليكي تنسيني؛ أنتي دايماً في قلبي وبدعيلك دايماً.. كل سنة وأنتي أجمل وأغلى نعمة في حياتي.`;
+
+let letterTypingInterval = null;
+
+function revealLetter(){
+  const backdrop = document.getElementById('mobile-letter-backdrop');
+  const mobText = document.getElementById('mobile-letter-text');
+  const containerBoxMob = document.getElementById('letterPaperBox');
+  const bottomImg = document.getElementById('bottom-img-mob');
+  const signoff = document.getElementById('signoff-mob');
+
+  if (letterTypingInterval) clearInterval(letterTypingInterval);
+
+  backdrop.style.display = 'grid';
+  setTimeout(() => { backdrop.style.opacity = '1'; }, 10);
+
+  mobText.textContent = '';
+  bottomImg.style.opacity = '0';
+  signoff.style.opacity = '0';
+  containerBoxMob.scrollTop = 0;
+
+  celebrate(24);
+
+  const chars = Array.from(letterFullText);
+  let currentIndex = 0;
+
+  setTimeout(() => {
+    letterTypingInterval = setInterval(() => {
+      if (currentIndex < chars.length) {
+        mobText.textContent += chars[currentIndex];
+        containerBoxMob.scrollTop = containerBoxMob.scrollHeight;
+        currentIndex++;
+      } else {
+        clearInterval(letterTypingInterval);
+        bottomImg.style.opacity = '1';
+        signoff.style.opacity = '1';
+        setTimeout(() => {
+          containerBoxMob.scrollTo({ top: containerBoxMob.scrollHeight, behavior: 'smooth' });
+        }, 150);
+      }
+    }, 65);
+  }, 600);
+}
+
+function closeLetterModal(){
+  const backdrop = document.getElementById('mobile-letter-backdrop');
+  if (letterTypingInterval) clearInterval(letterTypingInterval);
+  backdrop.style.opacity = '0';
+  setTimeout(() => {
+    backdrop.style.display = 'none';
+    document.getElementById('mobile-letter-text').textContent = '';
+  }, 320);
+}
+
+function handleBackdropClick(e){
+  if (e.target.id === 'mobile-letter-backdrop') {
+    closeLetterModal();
+  }
+}
+
+// تحديث شريط التقدم مع وقت الأغنية وإظهار الجملة
+birthdayAudio.addEventListener('timeupdate', () => {
+  if (birthdayAudio.duration) {
+    const percent = (birthdayAudio.currentTime / birthdayAudio.duration) * 100;
+    progressBar.style.width = percent + '%';
+  }
+  
+  // إظهار العبارة بنعومة بعد 4 ثواني من تشغيل الأغنية
+  if (birthdayAudio.currentTime > 4) {
+    const extraMsg = document.getElementById('extraSurpriseMsg');
+    if (extraMsg) {
+      extraMsg.style.opacity = '1';
+      extraMsg.style.transform = 'translateY(0)';
+    }
+  }
+});
+
+function playTune(restart=false){
+  if (restart) {
+    birthdayAudio.currentTime = 0;
+  }
+  birthdayAudio.play().then(() => {
+    playButton.textContent = 'Ⅱ';
+    musicStatus.textContent = '🐻 الدبدوب بيعزفلك بحب.. كل سنة والضحكة ما تفارقك 🌸🎈';
+    singingBear.classList.remove('hidden');
+    defaultMusicIcon.classList.add('hidden');
+    musicCard.classList.add('playing-active');
+    celebrate(18);
+  }).catch(() => {
+    musicStatus.textContent = 'اضغطي مرة كمان لتشغيل الصوت 🎵';
+  });
+}
+
+function toggleTune(){
+  if (!birthdayAudio.paused) {
+    birthdayAudio.pause();
+    playButton.textContent = '▶';
+    musicStatus.textContent = 'تم الإيقاف مؤقتاً.. 🎶';
+    musicCard.classList.remove('playing-active');
+  } else {
+    playTune(false);
+  }
+}
+
+function stopTune(reset=true){
+  birthdayAudio.pause();
+  if (reset) {
+    birthdayAudio.currentTime = 0;
+    progressBar.style.width = '0%';
+    singingBear.classList.add('hidden');
+    defaultMusicIcon.classList.remove('hidden');
+    musicStatus.textContent = 'تم إيقاف مؤقتاً.. 🎶';
+  }
+  playButton.textContent = '▶';
+  musicCard.classList.remove('playing-active');
+}
+</script>
+</body>
+</html>
